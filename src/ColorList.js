@@ -9,6 +9,7 @@ class ColorList extends Component {
         <ul>
           {this.props.colors.map((c, idx) =>
             <li key={idx}><Link to={`/colors/${c}`}>{c}</Link></li>
+            // react wanted key prop on index rather than the Link
           )}
         </ul>
       </div>
