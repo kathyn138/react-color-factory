@@ -1,26 +1,40 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
+import Color from './Color';
+import ColorList from './ColorList';
+import AddColor from './AddColor';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+
+class App extends Component {  
+  constructor(props) {
+    super(props);
+    this.state = {
+      colors: ['green', 'yellow', 'red', 'blue']
+    }
+    this.addColor = this.addColor.bind(this);
+  }
+
+  addColor(color) {
+    this.setState({
+      colors: [...this.state.colors, color]
+    })
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <BrowserRouter>
+          <Switch>
+            <Route exact path="/colors" render={() => <ColorList colors={this.state.colors} />} />
+            <Route exact path="/colors/new" render={rtProps => <AddColor {...rtProps} addColor={this.addColor} />} />
+            <Route exact path="/colors/:color" render={rtProps => <Color {...rtProps} allColors={this.state.colors}/> } />
+            <Redirect to="/colors" />
+          </Switch>
+        </BrowserRouter>
+      </div>
+    )
+  }
 }
 
 export default App;
